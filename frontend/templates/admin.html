@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="space-y-6">
+    <div>
+        <h2 class="text-3xl font-extrabold text-teal-800">Admin Dashboard</h2>
+        <p class="text-gray-600 mt-2">Overview of completed payments, bookings, and cleaners.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <article class="bg-white rounded-xl shadow p-5">
+            <p class="text-gray-600">Revenue</p>
+            <p class="text-2xl font-bold text-teal-800">KES {{ "%.2f"|format(total_revenue) }}</p>
+        </article>
+        <article class="bg-white rounded-xl shadow p-5">
+            <p class="text-gray-600">Bookings</p>
+            <p class="text-2xl font-bold text-teal-800">{{ total_bookings }}</p>
+        </article>
+        <article class="bg-white rounded-xl shadow p-5">
+            <p class="text-gray-600">Cleaners</p>
+            <p class="text-2xl font-bold text-teal-800">{{ pending_cleaners }}</p>
+        </article>
+    </div>
+
+    <div class="bg-white rounded-xl shadow border border-gray-100 overflow-x-auto">
+        <table class="w-full text-left">
+            <thead class="bg-teal-700 text-white">
+                <tr>
+                    <th class="p-3">Booking</th>
+                    <th class="p-3">Customer</th>
+                    <th class="p-3">Service</th>
+                    <th class="p-3">Schedule</th>
+                    <th class="p-3">Location</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3">Payment</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {% for booking in bookings %}
+                <tr>
+                    <td class="p-3">#{{ booking.booking_id }}</td>
+                    <td class="p-3">{{ booking.customer_name }}</td>
+                    <td class="p-3">{{ booking.service_name }}</td>
+                    <td class="p-3">{{ booking.slot_date }} {{ booking.start_time }}</td>
+                    <td class="p-3">{{ booking.location }}</td>
+                    <td class="p-3">{{ booking.status }}</td>
+                    <td class="p-3">KES {{ "%.2f"|format(booking.amount) }} ({{ booking.method }})</td>
+                </tr>
+                {% else %}
+                <tr><td class="p-3 text-gray-600" colspan="7">No bookings yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="max-w-md mx-auto bg-white p-6 md:p-8 rounded-xl shadow border border-gray-100">
+    <h2 class="text-2xl font-extrabold text-teal-800 mb-4">Admin Login</h2>
+    {% if login_enabled %}
+    <form method="POST" class="space-y-4">
+        <div>
+            <label for="password" class="block font-bold mb-1">Admin password</label>
+            <input id="password" type="password" name="password" required autocomplete="current-password" class="w-full border rounded-lg p-3">
+        </div>
+        <button type="submit" class="bg-teal-700 text-white font-bold px-6 py-3 rounded-lg hover:bg-teal-800">Sign in</button>
+    </form>
+    {% else %}
+    <p class="text-red-700">Admin access is not configured. Set `ADMIN_PASSWORD` in the environment, then restart the app.</p>
+    {% endif %}
+</section>
+{% endblock %}

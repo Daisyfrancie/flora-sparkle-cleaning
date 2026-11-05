@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flora Sparkle Cleaning Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+    <header class="bg-teal-700 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold"><i class="fa-solid fa-sparkles"></i> Flora Sparkle Cleaning</h1>
+            <nav class="space-x-4">
+                <a href="/" class="hover:underline">Home</a>
+                <a href="/booking" class="hover:underline">Book Now</a>
+                <a href="/clients" class="hover:underline">Clients</a>
+                <a href="/admin" class="bg-teal-800 px-3 py-1 rounded">Admin Dashboard</a>
+            </nav>
+        </div>
+    </header>
+    <div class="container mx-auto p-6 flex-grow">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="p-4 mb-4 rounded bg-teal-100 text-teal-800 border border-teal-300 font-bold">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+    <a href="https://wa.me/254712345678" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-lg hover:bg-green-600 transition" title="WhatsApp Chat">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <footer class="bg-gray-800 text-white text-center p-4 mt-8">
+        &copy; 2026 Flora Sparkle Cleaning Services - Nairobi, Kenya
+    </footer>
+</body>
+</html>

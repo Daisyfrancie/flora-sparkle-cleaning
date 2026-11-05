@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="space-y-8">
+    <div class="flex justify-between items-center border-b pb-4">
+        <h2 class="text-3xl font-extrabold text-teal-800"><i class="fa-solid fa-users mr-2"></i> Client Management</h2>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="bg-white p-6 rounded-xl shadow border border-gray-100 max-w-2xl">
+        <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Add New Client</h3>
+        <form method="POST" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Full Name</label>
+                    <input type="text" name="full_name" required placeholder="e.g. Mary Wanjiku" class="w-full border rounded-lg p-2.5">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Email Address</label>
+                    <input type="email" name="email" required placeholder="mary@example.com" class="w-full border rounded-lg p-2.5">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Phone Number</label>
+                    <input type="text" name="phone" required placeholder="0712345678" class="w-full border rounded-lg p-2.5">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Location / Estate</label>
+                    <input type="text" name="location" required placeholder="e.g. Westlands, Nairobi" class="w-full border rounded-lg p-2.5">
+                </div>
+            </div>
+            <div>
+                <label class="block font-bold text-gray-700 mb-1">Notes / Preferences</label>
+                <textarea name="notes" rows="2" placeholder="e.g. Prefers morning cleaning sessions" class="w-full border rounded-lg p-2.5"></textarea>
+            </div>
+            <button type="submit" class="bg-teal-700 text-white font-bold px-6 py-2.5 rounded-lg hover:bg-teal-800 transition">Save Client</button>
+        </form>
+    </div>
+
+    <!-- Clients Table -->
+    <div class="bg-white rounded-xl shadow border border-gray-100 overflow-hidden">
+        <div class="p-4 bg-gray-50 border-b font-bold text-gray-700">Registered Clients List</div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-teal-700 text-white text-sm">
+                    <tr>
+                        <th class="p-3">ID</th>
+                        <th class="p-3">Full Name</th>
+                        <th class="p-3">Email</th>
+                        <th class="p-3">Phone</th>
+                        <th class="p-3">Location</th>
+                        <th class="p-3">Notes</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y text-sm">
+                    {% for c in clients %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="p-3 font-bold text-teal-700">#{{ c.client_id }}</td>
+                        <td class="p-3 font-semibold">{{ c.full_name }}</td>
+                        <td class="p-3">{{ c.email }}</td>
+                        <td class="p-3">{{ c.phone }}</td>
+                        <td class="p-3">{{ c.location }}</td>
+                        <td class="p-3 text-gray-600">{{ c.notes or 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
