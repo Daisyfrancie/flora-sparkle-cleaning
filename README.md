@@ -28,3 +28,5 @@ The `.env` file contains local credentials and should not be shared. The app cre
 The `render.yaml` Blueprint defines a Python web service and a PostgreSQL database. Push this project folder to a GitHub repository, then in Render choose **New → Blueprint**, connect the repository, and apply the Blueprint. Render supplies `DATABASE_URL` and generates `SECRET_KEY`; no local `.env` file should be uploaded.
 
 The Blueprint uses Render's Free plans for testing. Free web services can sleep when idle, and Free PostgreSQL databases expire after 30 days. Upgrade the database before expiry if you need to keep its data. The Blueprint generates an `ADMIN_PASSWORD`; after deployment, reveal it in the Render service's Environment settings and use it at `/admin/login`. Do not commit or share the password.
+
+See [DEPLOYMENT_REPORT.txt](DEPLOYMENT_REPORT.txt) for the deployment URL and notes about where the frontend files are managed.

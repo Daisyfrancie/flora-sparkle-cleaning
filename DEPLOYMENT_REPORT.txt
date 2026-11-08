@@ -1,0 +1,18 @@
+FLORA SPARKLE CLEANING - DEPLOYMENT REPORT
+
+Status: Deployed on Render.
+Hosting: Render web service with a Render-managed PostgreSQL database.
+Live URL: https://flora-sparkle-cleaning.onrender.com
+
+Frontend files:
+The Flask application is configured to load its templates from frontend/templates.
+The Render Blueprint builds and starts the web service from this project, so these
+files are part of the application source deployed from the connected repository.
+Render's service dashboard is not a file browser; it shows deployment status,
+logs, settings, and related service information. Manage source files in the
+connected Git repository and redeploy after pushing changes.
+
+Review feature:
+The homepage displays submitted customer reviews and ratings. Customers can
+submit a service review from the homepage. Existing booking-linked reviews remain
+supported after the schema update runs during application initialization.

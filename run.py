@@ -87,6 +87,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS reviews (
             review_id SERIAL PRIMARY KEY,
             booking_id INTEGER REFERENCES bookings(booking_id),
+            service_id INTEGER REFERENCES services(service_id),
             rating INTEGER NOT NULL,
             comment TEXT NOT NULL
         );
@@ -100,6 +101,9 @@ def init_db():
             notes TEXT
         );
         """)
+        cursor.execute(
+            'ALTER TABLE reviews ADD COLUMN IF NOT EXISTS service_id INTEGER REFERENCES services(service_id)'
+        )
         
         cursor.execute('SELECT COUNT(*) FROM services')
         count = cursor.fetchone()['count']
@@ -143,11 +147,50 @@ def index():
     cursor.execute('SELECT * FROM services')
     services = cursor.fetchall()
     
-    cursor.execute('SELECT r.*, s.name as service_name FROM reviews r JOIN bookings b ON r.booking_id = b.booking_id JOIN services s ON b.service_id = s.service_id')
+    cursor.execute('''
+        SELECT r.*, s.name AS service_name
+        FROM reviews r
+        LEFT JOIN bookings b ON r.booking_id = b.booking_id
+        JOIN services s ON s.service_id = COALESCE(r.service_id, b.service_id)
+        ORDER BY r.review_id DESC
+    ''')
     reviews = cursor.fetchall()
     cursor.close()
     conn.close()
     return render_template('index.html', services=services, reviews=reviews)
+
+@app.route('/reviews', methods=('POST',))
+def submit_review():
+    try:
+        service_id = int(request.form.get('service_id', ''))
+        rating = int(request.form.get('rating', ''))
+    except ValueError:
+        flash('Choose a service and a rating from 1 to 5.', 'error')
+        return redirect(url_for('index'))
+
+    comment = request.form.get('comment', '').strip()
+    if not 1 <= rating <= 5 or not comment or len(comment) > 1000:
+        flash('Enter a review (up to 1000 characters) and a rating from 1 to 5.', 'error')
+        return redirect(url_for('index'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT service_id FROM services WHERE service_id = %s', (service_id,))
+    if not cursor.fetchone():
+        cursor.close()
+        conn.close()
+        flash('Please choose one of the listed services.', 'error')
+        return redirect(url_for('index'))
+
+    cursor.execute(
+        'INSERT INTO reviews (service_id, rating, comment) VALUES (%s, %s, %s)',
+        (service_id, rating, comment)
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+    flash('Thank you for sharing your review!', 'success')
+    return redirect(url_for('index'))
 
 @app.route('/booking', methods=('GET', 'POST'))
 def booking():
